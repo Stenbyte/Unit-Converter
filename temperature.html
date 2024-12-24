@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Length Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-color: #f5f5f5;
+        padding: 50px;
+      }
+      .container {
+        margin-top: 20px;
+      }
+      input,
+      select {
+        padding: 10px;
+        margin: 10px;
+        font-size: 16px;
+      }
+      .button {
+        padding: 10px 20px;
+        font-size: 18px;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+      }
+      .button:hover {
+        background-color: #0056b3;
+      }
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+      }
+    </style>
+    <script
+      src="https://unpkg.com/htmx.org@2.0.4"
+      integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <h1>Length Converter</h1>
+    <form hx-get="/convertTemperature">
+      <div class="container">
+        <input
+          type="number"
+          id="value"
+          placeholder="Enter value"
+          required
+          name="value"
+        />
+        <select id="from-unit" name="from">
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
+        <select id="to-unit" name="to">
+          <option value="celsius">Celsius</option>
+          <option value="fahrenheit">Fahrenheit</option>
+          <option value="kelvin">Kelvin</option>
+        </select>
+
+        <input
+          type="submit"
+          id="convert-btn"
+          class="button"
+          hx-target="#result"
+          hx-params="*"
+        />
+      </div>
+    </form>
+    <div id="result"></div>
+    <a href="index.html" class="button" style="margin-top: 20px">Back</a>
+    <script>
+      document.getElementById("convert-btn").addEventListener("click", () => {
+        const value = document.getElementById("value").value;
+        const fromUnit = document.getElementById("from-unit").value;
+        const toUnit = document.getElementById("to-unit").value;
+
+        const queryParams = new URLSearchParams({
+          value,
+          from: fromUnit,
+          to: toUnit,
+        }).toString();
+
+        const hxGetUrl = `/convertLength?${queryParams}`;
+        document.getElementById("convert-btn").setAttribute("hx-get", hxGetUrl);
+      });
+    </script>
+  </body>
+</html>
